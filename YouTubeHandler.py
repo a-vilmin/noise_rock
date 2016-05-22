@@ -1,6 +1,5 @@
 import httplib2
 import sys
-from NoiseRockers import NoiseRockers
 
 from urllib.parse import urlparse, parse_qs
 from apiclient.discovery import build
@@ -16,7 +15,7 @@ class YouTubeHandler():
         dev_key = 'AIzaSyCtzkBXa4us6QVTLp_Y_UgS1jnldKGuae0'
         self.you_tube = self._auth(secret, rw_scope, dev_key)
         self.playlist = 'PLSs2EARcZ9y5wCkGjyvckl2eSWUMpXe4c'
-        self.NRN = NoiseRockers()
+        self.playlist_vids = []
         
     def _auth(self, secret, rw_scope, dev_key):
         flow = flow_from_clientsecrets(secret, scope = rw_scope,
@@ -81,16 +80,14 @@ class YouTubeHandler():
                 }
             }
         ).execute()
+
+        self.playlist_vids += [videoID]
         return add_video_request
 
-    def get_links(self):
-        posts = self.NRN.read_posts()
-        link_ids = []
-        for each in posts:
-            id = self._video_id(each)
-            if id != None:
-                link_ids.append(id)
-        return link_ids
+    def not_repost(self, videoID):
+        return videoID not in self.playlist_vids
+
+    
         
 if __name__ == '__main__':
     youTube = YouTubeHandler()
