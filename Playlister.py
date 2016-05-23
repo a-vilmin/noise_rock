@@ -1,6 +1,9 @@
 from NoiseRockers import NoiseRockers
 from YouTubeHandler import YouTubeHandler
-from time import sleep
+import time
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 class Playlister():
 
@@ -8,6 +11,26 @@ class Playlister():
         self.NRN = NoiseRockers()
         self.YouTube = YouTubeHandler()
 
+    def email_error(self, error):
+        fp = open("logs.txt", 'r')
+        info = [x.strip('\n') for x in fp.readlines()]
+
+        msg = MIMEMultipart()
+        msg['From'] = info[0]
+        msg['To'] = info[1]
+        msg['Subject'] = "Error at" + time.strftime("%x")   
+
+        body = "The NOISE has been stopped by "+str(error[0])
+        body +=". Argument passed was "+ str(error[1])+".\n FUCK!,\nAdam"
+
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('smtp.gmail.com',587)
+        server.starttls()
+        server.login(info[0], info[2])
+        txt = msg.as_string()
+        server.sendmail(info[0], info[1], txt)
+        server.quit()
 
     
     def youtube_post(self):
@@ -27,7 +50,12 @@ class Playlister():
 
 if __name__ == '__main__':
     playlist_manager = Playlister()
-
+    fuckery = {'dick': 9000}
+    try:
+        while True:    
+            playlist_manager.youtube_post()
+            time.sleep(6000)
+    except Exception as ex:
+        message = (type(ex).__name__, ex.args)
+        playlist_manager.email_error(message)
         
-    playlist_manager.youtube_post()
-    #sleep(6000)
