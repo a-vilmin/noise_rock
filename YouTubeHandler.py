@@ -43,6 +43,8 @@ class YouTubeHandler():
         playlists = self.you_tube.playlists().list(part = 'snippet',
                                                    channelId=channel_id
                                                    ).execute()
+
+        
         for each in playlists['items']:
             print(str(each['snippet']['publishedAt']))
     def _video_id(self, value):

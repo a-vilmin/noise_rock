@@ -1,0 +1,19 @@
+from NoiseRockers import NoiseRockers
+from YouTubeHandler import YouTubeHandler
+
+class Playlister():
+
+    def __init__(self):
+        self.NRN = NoiseRockers()
+        self.YouTube = YouTubeHandler()
+
+
+    
+    def get_links(self):
+        posts = self.NRN.read_posts()
+        link_ids = []
+        for each in posts:
+            id = self._video_id(each)
+            if id != None:
+                link_ids.append(id)
+        return link_ids
