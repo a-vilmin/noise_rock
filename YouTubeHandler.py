@@ -1,5 +1,6 @@
 import httplib2
 import sys
+from datetime import datetime, timedelta, date
 
 from urllib.parse import urlparse, parse_qs
 from apiclient.discovery import build
@@ -33,6 +34,18 @@ class YouTubeHandler():
     def _vids(self):
         return []
 
+    def get_week(self):
+        six_days = timedelta(days=6)
+        
+        day_idx = (datetime.now().date().weekday() + 1) % 7
+        sunday = datetime.now().date() - timedelta(days=day_idx)
+        end_date = sunday + six_days
+
+        sunday = str(sunday).split("-")
+        end_date = str(end_date).split("-")
+        return (int(sunday[1]),int(sunday[2]),int(sunday[0])),(
+            int(end_date[1]),int(end_date[2]),int(end_date[0]))
+
     def _curr_list(self):
         channel_id = self.you_tube.channels().list(
             mine=True,
@@ -44,9 +57,22 @@ class YouTubeHandler():
                                                    channelId=channel_id
                                                    ).execute()
 
-        
+
+        start, end = self.get_week()
         for each in playlists['items']:
-            print(str(each['snippet']['publishedAt']))
+            curr_date = each['snippet']['publishedAt'].split("-")
+
+            year = int(curr_date[0][1:5])
+            month = int(curr_date[1][1:3])
+            day = int(curr_date[2][0:2])
+
+            curr_date = (month, day, year)
+
+            if start < curr_date < end:
+                print("yes")
+                #return each['snippet']
+
+        #return self.create_playlist() #no playlist, so make new one     
     def _video_id(self, value):
         """
         Examples:
