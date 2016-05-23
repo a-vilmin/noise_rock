@@ -32,7 +32,16 @@ class YouTubeHandler():
                      http=credentials.authorize(httplib2.Http()))
 
     def _vids(self):
-        return []
+        playlist_info = self.you_tube.playlistItems().list(
+            part = "snippet",
+            playlistId = self.playlist,
+            maxResults = 50
+            ).execute()
+
+        prev_vids = []
+        for each in playlist_info['items']:
+            prev_vids += [each['snippet']['resourceId']['videoId']]
+        return prev_vids
 
     def get_week(self):
         six_days = timedelta(days=6)
