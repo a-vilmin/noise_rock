@@ -1,5 +1,6 @@
 from NoiseRockers import NoiseRockers
 from YouTubeHandler import YouTubeHandler
+from time import sleep
 
 class Playlister():
 
@@ -25,7 +26,9 @@ class Playlister():
                 self.YouTube.add_to_playlist(each)
 
 if __name__ == '__main__':
-
     playlist_manager = Playlister()
 
-    playlist_manager.youtube_post()
+    '''while True:
+        
+        playlist_manager.youtube_post()
+        sleep(6000)'''

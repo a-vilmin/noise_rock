@@ -14,8 +14,8 @@ class YouTubeHandler():
         rw_scope = "https://www.googleapis.com/auth/youtube"
         dev_key = 'AIzaSyCtzkBXa4us6QVTLp_Y_UgS1jnldKGuae0'
         self.you_tube = self._auth(secret, rw_scope, dev_key)
-        self.playlist = 'PLSs2EARcZ9y5wCkGjyvckl2eSWUMpXe4c'
-        self.playlist_vids = []
+        self.playlist = self._curr_list()
+        self.playlist_vids = self._vids()
         
     def _auth(self, secret, rw_scope, dev_key):
         flow = flow_from_clientsecrets(secret, scope = rw_scope,
@@ -30,6 +30,21 @@ class YouTubeHandler():
         return build("youtube", "v3",
                      http=credentials.authorize(httplib2.Http()))
 
+    def _vids(self):
+        return []
+
+    def _curr_list(self):
+        channel_id = self.you_tube.channels().list(
+            mine=True,
+            part="id"
+            ).execute()
+        channel_id = channel_id['items'][0]['id']
+    
+        playlists = self.you_tube.playlists().list(part = 'snippet',
+                                                   channelId=channel_id
+                                                   ).execute()
+        for each in playlists['items']:
+            print(str(each['snippet']['publishedAt']))
     def _video_id(self, value):
         """
         Examples:
