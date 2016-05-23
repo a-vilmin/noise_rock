@@ -50,7 +50,7 @@ class Playlister():
 
 if __name__ == '__main__':
     playlist_manager = Playlister()
-    fuckery = {'dick': 9000}
+    
     try:
         while True:    
             playlist_manager.youtube_post()
