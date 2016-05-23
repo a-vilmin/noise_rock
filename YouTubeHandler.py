@@ -71,7 +71,7 @@ class YouTubeHandler():
             if start < curr_date < end:
                 return each['id']
 
-        #return self.create_playlist() #no playlist, so make new one     
+        return self.create_playlist() #no playlist, so make new one     
     def _video_id(self, value):
         """
         Examples:
