@@ -1,6 +1,6 @@
 import httplib2
 import sys
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 from urllib.parse import urlparse, parse_qs
 from apiclient.discovery import build
@@ -95,12 +95,15 @@ class YouTubeHandler():
         return None
 
     def create_playlist(self):
+        start, end = self.get_week()
+        start = " ".join(str(start))
+        end = " ".join(str(end))
         playlists_insert_response = self.you_tube.playlists().insert(
             part="snippet,status",
             body=dict(
                 snippet=dict(
-                    title="NOISE_ROCK_NOW_!!!",
-                    description="A Noise Rock Now Playlist"),
+                    title="NOISE_ROCK_NOW_!!!("+start+" to "+end+")",
+                    description="Noise Rock Now weekly playlist"),
                 status=dict(
                     privacyStatus="public"
                 )
