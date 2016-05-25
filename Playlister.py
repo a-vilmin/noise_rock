@@ -52,9 +52,9 @@ if __name__ == '__main__':
     playlist_manager = Playlister()
     
     try:
-        while True:    
-            playlist_manager.youtube_post()
-            time.sleep(6000)
+        #while True:    
+        playlist_manager.youtube_post()
+        #time.sleep(6000)
     except Exception as ex:
         message = (type(ex).__name__, ex.args)
         playlist_manager.email_error(message)

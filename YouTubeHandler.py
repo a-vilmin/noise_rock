@@ -121,22 +121,26 @@ class YouTubeHandler():
         return playlists_insert_response
 
     def add_to_playlist(self, videoID):
-        add_video_request= self.you_tube.playlistItems().insert(
-            part="snippet",
-            body={
-                'snippet': {
-                    'playlistId': self.playlist, 
-                    'resourceId': {
-                        'kind': 'youtube#video',
-                        'videoId': videoID
+        try:
+            add_video_request= self.you_tube.playlistItems().insert(
+                    part="snippet",
+                    body={
+                        'snippet': {
+                            'playlistId': self.playlist, 
+                            'resourceId': {
+                                'kind': 'youtube#video',
+                                'videoId': videoID
+                            }
+                            #'position': 0
+                        }
                     }
-                    #'position': 0
-                }
-            }
-        ).execute()
-
-        self.playlist_vids += [videoID]
-        return add_video_request
+                ).execute()
+        
+            self.playlist_vids += [videoID]
+            return add_video_request
+        except:
+            pass
+        
 
     def not_repost(self, videoID):
         return videoID not in self.playlist_vids
