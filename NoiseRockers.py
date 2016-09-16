@@ -1,11 +1,12 @@
 import facebook
 
+
 class NoiseRockers():
-    
+
     def __init__(self):
         keys = []
         with open('access.txt') as f:
-           keys = f.read().splitlines()
+            keys = f.read().splitlines()
 
         self.nrn_id = keys[0]
         self.app_id = keys[1]
