@@ -15,7 +15,7 @@ class NoiseRockers():
         self.init_fb()
 
     def init_fb(self):
-        
+
         self.graph = facebook.GraphAPI(access_token = self.key)
         self.extended_token = self.graph.extend_access_token(self.app_id,
                                                              self.app_secret)
